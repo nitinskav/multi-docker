@@ -1,5 +1,6 @@
-language: generic
 sudo: required
+language: generic
+
 services:
   - docker
 
@@ -10,10 +11,10 @@ script:
   - docker run -e CI=true nitinsimps/react-test npm test
 
 after_success:
-  - docker bulid -t nitinsimps/multi-client ./client
-  - docker bulid -t nitinsimps/multi-nginx ./nginx
-  - docker bulid -t nitinsimps/multi-server ./server
-  - docker bulid -t nitinsimps/multi-worker ./worker
+  - docker build -t nitinsimps/multi-client ./client
+  - docker build -t nitinsimps/multi-nginx ./nginx
+  - docker build -t nitinsimps/multi-server ./server
+  - docker build -t nitinsimps/multi-worker ./worker
 
   # login to dockercli
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID"  --password-stdin
