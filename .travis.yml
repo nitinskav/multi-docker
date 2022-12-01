@@ -1,0 +1,25 @@
+language: generic
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t nitinsimps/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true nitisimps/react-test npm test
+
+after_success:
+  - docker bulid -t nitinsimps/multi-client ./client
+  - docker bulid -t nitinsimps/multi-nginx ./nginx
+  - docker bulid -t nitinsimps/multi-server ./server
+  - docker bulid -t nitinsimps/multi-worker ./worker
+
+  # login to dockercli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID"  --password-stdin
+  # images pushed to dockerhub
+  - docker push nitinsimps/multi-client
+  - docker push nitinsimps/multi-nginx
+  - docker push nitinsimps/multi-server
+  - docker push nitinsimps/multi-worker
+  
