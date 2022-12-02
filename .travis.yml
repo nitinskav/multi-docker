@@ -5,22 +5,22 @@ services:
   - docker
 
 before_install:
-  - docker build -t nitinsimps/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t nitinskav/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true nitinsimps/react-test npm test
+  - docker run -e CI=true nitinskav/react-test npm test
 
 after_success:
-  - docker build -t nitinsimps/multi-client ./client
-  - docker build -t nitinsimps/multi-nginx ./nginx
-  - docker build -t nitinsimps/multi-server ./server
-  - docker build -t nitinsimps/multi-worker ./worker
+  - docker build -t nitinskav/multi-client ./client
+  - docker build -t nitinskav/multi-nginx ./nginx
+  - docker build -t nitinskav/multi-server ./server
+  - docker build -t nitinskav/multi-worker ./worker
 
   # login to dockercli
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID"  --password-stdin
   # images pushed to dockerhub
-  - docker push nitinsimps/multi-client
-  - docker push nitinsimps/multi-nginx
-  - docker push nitinsimps/multi-server
-  - docker push nitinsimps/multi-worker
+  - docker push nitinskav/multi-client
+  - docker push nitinskav/multi-nginx
+  - docker push nitinskav/multi-server
+  - docker push nitinskav/multi-worker
   
