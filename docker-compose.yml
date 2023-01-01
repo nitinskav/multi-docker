@@ -1,39 +1,31 @@
-{
-  "AWSEBDockerrunVersion": 2,
-  "containerDefinitions": [
-    {
-      "name": "client",
-      "image": "nitinskav/multi-client",
-      "hostname": "client",
-      "essential": false,
-      "memory": 128
-    },
-    {
-      "name": "server",
-      "image": "nitinskav/multi-server",
-      "hostname": "api",
-      "essential": false,
-      "memory": 128
-    },
-    {
-      "name": "worker",
-      "image": "nitinskav/multi-worker",
-      "hostname": "worker",
-      "essential": false,
-      "memory": 128
-    },
-    {
-      "name": "nginx",
-      "image": "nitinskav/multi-nginx",
-      "essential": true,
-      "portMappings": [
-        {
-          "hostPort": 80,
-          "containerPort": 80
-        }
-      ],
-      "links":["client","server"],
-      "memory": 128
-    }
-  ]
-}
+version: "3"
+services:
+  client:
+    image: "nitinskav/multi-client"
+    mem_limit: 128m
+    hostname: client
+  server:
+    image: "nitinskav/multi-server"
+    mem_limit: 128m
+    hostname: api
+    environment:
+      - REDIS_HOST=$REDIS_HOST
+      - REDIS_PORT=$REDIS_PORT
+      - PGUSER=$PGUSER
+      - PGHOST=$PGHOST
+      - PGDATABASE=$PGDATABASE
+      - PGPASSWORD=$PGPASSWORD
+      - PGPORT=$PGPORT
+  worker:
+    image: "nitinskav/multi-worker"
+    mem_limit: 128m
+    hostname: worker
+    environment:
+      - REDIS_HOST=$REDIS_HOST
+      - REDIS_PORT=$REDIS_PORT
+  nginx:
+    image: "nitiskav/multi-nginx"
+    mem_limit: 128m
+    hostname: nginx
+    ports:
+      - "80:80"
